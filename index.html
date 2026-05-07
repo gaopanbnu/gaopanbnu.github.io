@@ -157,6 +157,7 @@
         }
 
         .avatar-upload:hover { transform: scale(1.1); }
+        .avatar-upload { display: none; }
         .avatar-upload input { display: none; }
 
         .hero-badge {
@@ -192,7 +193,100 @@
         }
 
         .hero .tagline { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem; font-weight: 300; }
-        .hero .summary { font-size: 0.88rem; color: var(--text-dim); max-width: 580px; margin: 0 auto 2rem; line-height: 1.8; }
+        .hero .summary { font-size: 0.88rem; color: var(--text-dim); max-width: 580px; margin: 0 auto 1.2rem; line-height: 1.8; }
+
+        .hero-contact {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-contact a, .hero-contact span {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.82rem;
+            transition: color 0.3s;
+        }
+
+        .hero-contact a:hover { color: var(--accent); }
+
+        .hero-strength {
+            max-width: 620px;
+            margin: 0 auto 2rem;
+            text-align: left;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+        }
+
+        .hero-strength p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 0.6rem;
+        }
+
+        .hero-strength p:last-child { margin-bottom: 0; }
+        .hero-strength strong { color: var(--accent); }
+
+        /* Password modal */
+        .pwd-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            z-index: 99999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pwd-overlay.active { display: flex; }
+
+        .pwd-box {
+            background: #1e293b;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            width: 320px;
+        }
+
+        .pwd-box h4 { color: #fff; margin-bottom: 1rem; font-size: 1rem; }
+
+        .pwd-box input {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            outline: none;
+        }
+
+        .pwd-box input:focus { border-color: var(--accent); }
+
+        .pwd-box .pwd-btns { display: flex; gap: 0.8rem; }
+
+        .pwd-box button {
+            flex: 1;
+            padding: 0.5rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: opacity 0.2s;
+        }
+
+        .pwd-box .pwd-confirm { background: var(--accent); color: #fff; }
+        .pwd-box .pwd-cancel { background: rgba(255,255,255,0.1); color: var(--text-muted); }
+        .pwd-box button:hover { opacity: 0.8; }
+        .pwd-box .pwd-error { color: #ef4444; font-size: 0.78rem; margin-bottom: 0.8rem; display: none; }
 
         .hero-stats {
             display: flex;
@@ -364,25 +458,6 @@
         .edu-card .edu-highlights li { font-size: 0.8rem; color: var(--text-muted); padding: 0.2rem 0 0.2rem 0.8rem; position: relative; }
         .edu-card .edu-highlights li::before { content:''; position:absolute; left:0; top:50%; width:4px; height:4px; background:var(--accent); border-radius:50%; }
 
-        /* Contact */
-        .contact-section { text-align: center; padding: 3rem 2rem; }
-        .contact-links { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
-
-        .contact-link {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.6rem 1.2rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.82rem;
-            transition: all 0.3s;
-        }
-
-        .contact-link:hover { border-color: rgba(59,130,246,0.3); color: var(--accent); }
 
         footer { text-align: center; padding: 1.5rem; border-top: 1px solid var(--border); color: var(--text-dim); font-size: 0.75rem; }
 
@@ -414,7 +489,6 @@
                 <li><a href="#experience">经历</a></li>
                 <li><a href="#projects">项目</a></li>
                 <li><a href="#education">教育</a></li>
-                <li><a href="#contact">联系</a></li>
             </ul>
         </div>
     </nav>
@@ -439,6 +513,17 @@
             <h1 class="editable">高攀</h1>
             <p class="tagline editable">Data Analyst & Supply Chain Digitalization</p>
             <p class="summary editable">四年供应链数据分析实战经验，专注数据体系搭建与数字化转型。从数据治理到指标体系，从可视化看板到深度专题分析，以数据驱动业务决策。</p>
+
+            <div class="hero-contact">
+                <a href="mailto:gaopanbnu@163.com">&#9993; gaopanbnu@163.com</a>
+                <a href="tel:18001034784">&#9742; 18001034784</a>
+                <span>&#9873; 北京</span>
+            </div>
+
+            <div class="hero-strength">
+                <p class="editable"><strong>专业能力：</strong>精通 SQL、Python 进行数据提取与清洗，熟练运用 Power BI/数鲸构建可视化监控看板，熟悉常见统计学模型（回归、时序、主成分、机器学习等）及假设检验原理，能独立完成从数据挖掘、分析建模到结论输出的全流程。</p>
+                <p class="editable"><strong>自我评价：</strong>具"数据 + 业务"双视角，抗压善学，可快速将业务诉求转化为数据逻辑，高效支撑业务决策。先后荣获青年工程师(集团)、青蓝导师(集团)、优秀员工、季度之星等个人荣誉。</p>
+            </div>
 
             <div class="hero-stats">
                 <div class="hero-stat"><div class="number">4+</div><div class="label">年经验</div></div>
@@ -565,20 +650,21 @@
         </div>
     </section>
 
-    <!-- Contact -->
-    <section id="contact" class="contact-section">
-        <div class="section-header" style="text-align:center">
-            <div class="section-label">Contact</div>
-            <h2 class="section-title">联系方式</h2>
-        </div>
-        <div class="contact-links">
-            <a href="mailto:gaopanbnu@163.com" class="contact-link">&#9993; gaopanbnu@163.com</a>
-            <a href="tel:18001034784" class="contact-link">&#9742; 18001034784</a>
-            <span class="contact-link">&#9873; 北京</span>
-        </div>
-    </section>
 
     <footer>&copy; 2026 高攀 · Built with data-driven mindset</footer>
+
+    <!-- Password dialog -->
+    <div class="pwd-overlay" id="pwdOverlay">
+        <div class="pwd-box">
+            <h4>&#128274; 输入管理密码</h4>
+            <p class="pwd-error" id="pwdError">密码错误，请重试</p>
+            <input type="password" id="pwdInput" placeholder="请输入密码..." onkeydown="if(event.key==='Enter')confirmPwd()">
+            <div class="pwd-btns">
+                <button class="pwd-cancel" onclick="closePwd()">取消</button>
+                <button class="pwd-confirm" onclick="confirmPwd()">确认</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Modals -->
     <div class="modal-overlay" id="expModal">
@@ -719,17 +805,46 @@
             });
         });
 
-        // Edit mode
+        // Edit mode with password protection
+        const EDIT_PASSWORD = 'gp2026';
         let editMode = false;
+        let authenticated = false;
+
         function toggleEdit() {
+            if (!editMode && !authenticated) {
+                document.getElementById('pwdOverlay').classList.add('active');
+                document.getElementById('pwdInput').focus();
+                return;
+            }
             editMode = !editMode;
+            if (!editMode) authenticated = false;
             document.querySelectorAll('.editable').forEach(el => {
                 el.contentEditable = editMode;
             });
+            document.querySelector('.avatar-upload').style.display = editMode ? 'flex' : 'none';
             document.querySelector('.edit-toggle').style.background = editMode
                 ? 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)'
                 : 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)';
             document.querySelector('.edit-toggle').innerHTML = editMode ? '&#10003;' : '&#9998;';
+        }
+
+        function confirmPwd() {
+            const input = document.getElementById('pwdInput');
+            if (input.value === EDIT_PASSWORD) {
+                authenticated = true;
+                closePwd();
+                toggleEdit();
+            } else {
+                document.getElementById('pwdError').style.display = 'block';
+                input.value = '';
+                input.focus();
+            }
+        }
+
+        function closePwd() {
+            document.getElementById('pwdOverlay').classList.remove('active');
+            document.getElementById('pwdInput').value = '';
+            document.getElementById('pwdError').style.display = 'none';
         }
 
         // Avatar upload

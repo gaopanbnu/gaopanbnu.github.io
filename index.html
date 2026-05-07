@@ -102,11 +102,10 @@
 
         /* Hero */
         .hero {
-            min-height: 80vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 5rem 2rem 3rem;
+            padding: 6rem 2rem 3rem;
         }
 
         .hero-content { max-width: 800px; text-align: center; }
@@ -213,7 +212,7 @@
 
         .hero-strength {
             max-width: 620px;
-            margin: 0 auto 2rem;
+            margin: 0 auto;
             text-align: left;
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -225,10 +224,9 @@
             font-size: 0.82rem;
             color: var(--text-muted);
             line-height: 1.7;
-            margin-bottom: 0.6rem;
+            margin-bottom: 0;
         }
 
-        .hero-strength p:last-child { margin-bottom: 0; }
         .hero-strength strong { color: var(--accent); }
 
         /* Password modal */
@@ -287,28 +285,10 @@
         .pwd-box button:hover { opacity: 0.8; }
         .pwd-box .pwd-error { color: #ef4444; font-size: 0.78rem; margin-bottom: 0.8rem; display: none; }
 
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 2.5rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .hero-stat .number {
-            font-size: 1.6rem;
-            font-weight: 700;
-            background: var(--gradient-2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-stat .label { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-top: 0.2rem; }
 
         /* Sections */
-        section { padding: 4rem 2rem; max-width: 1100px; margin: 0 auto; }
-        .section-header { margin-bottom: 2rem; }
+        section { padding: 3rem 2rem; max-width: 1100px; margin: 0 auto; }
+        .section-header { margin-bottom: 1.5rem; }
         .section-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 0.5rem; font-weight: 500; }
         .section-title { font-size: 1.8rem; font-weight: 700; color: #fff; }
 
@@ -519,13 +499,6 @@
 
             <div class="hero-strength">
                 <p class="editable">四年供应链数据分析实战经验，专注数据体系搭建与数字化转型。从数据治理到指标体系，从可视化看板到深度专题分析，以数据驱动业务决策。具"数据 + 业务"双视角，抗压善学，可快速将业务诉求转化为数据逻辑，高效支撑业务决策。先后荣获青年工程师(集团)、青蓝导师(集团)、优秀员工、季度之星等个人荣誉。</p>
-            </div>
-
-            <div class="hero-stats">
-                <div class="hero-stat"><div class="number">4+</div><div class="label">年经验</div></div>
-                <div class="hero-stat"><div class="number">100+</div><div class="label">BI 看板</div></div>
-                <div class="hero-stat"><div class="number">1.1亿</div><div class="label">降库存</div></div>
-                <div class="hero-stat"><div class="number">10亿</div><div class="label">年降本目标</div></div>
             </div>
         </div>
     </section>

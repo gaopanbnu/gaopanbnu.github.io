@@ -193,7 +193,6 @@
         }
 
         .hero .tagline { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem; font-weight: 300; }
-        .hero .summary { font-size: 0.88rem; color: var(--text-dim); max-width: 580px; margin: 0 auto 1.2rem; line-height: 1.8; }
 
         .hero-contact {
             display: flex;
@@ -485,10 +484,10 @@
         <div class="nav-inner">
             <div class="logo">GP.</div>
             <ul>
+                <li><a href="#education">教育</a></li>
                 <li><a href="#skills">能力</a></li>
                 <li><a href="#experience">经历</a></li>
                 <li><a href="#projects">项目</a></li>
-                <li><a href="#education">教育</a></li>
             </ul>
         </div>
     </nav>
@@ -512,8 +511,6 @@
             </div>
             <h1 class="editable">高攀</h1>
             <p class="tagline editable">Data Analyst & Supply Chain Digitalization</p>
-            <p class="summary editable">四年供应链数据分析实战经验，专注数据体系搭建与数字化转型。从数据治理到指标体系，从可视化看板到深度专题分析，以数据驱动业务决策。</p>
-
             <div class="hero-contact">
                 <a href="mailto:gaopanbnu@163.com">&#9993; gaopanbnu@163.com</a>
                 <a href="tel:18001034784">&#9742; 18001034784</a>
@@ -521,8 +518,7 @@
             </div>
 
             <div class="hero-strength">
-                <p class="editable"><strong>专业能力：</strong>精通 SQL、Python 进行数据提取与清洗，熟练运用 Power BI/数鲸构建可视化监控看板，熟悉常见统计学模型（回归、时序、主成分、机器学习等）及假设检验原理，能独立完成从数据挖掘、分析建模到结论输出的全流程。</p>
-                <p class="editable"><strong>自我评价：</strong>具"数据 + 业务"双视角，抗压善学，可快速将业务诉求转化为数据逻辑，高效支撑业务决策。先后荣获青年工程师(集团)、青蓝导师(集团)、优秀员工、季度之星等个人荣誉。</p>
+                <p class="editable">四年供应链数据分析实战经验，专注数据体系搭建与数字化转型。从数据治理到指标体系，从可视化看板到深度专题分析，以数据驱动业务决策。具"数据 + 业务"双视角，抗压善学，可快速将业务诉求转化为数据逻辑，高效支撑业务决策。先后荣获青年工程师(集团)、青蓝导师(集团)、优秀员工、季度之星等个人荣誉。</p>
             </div>
 
             <div class="hero-stats">
@@ -530,6 +526,38 @@
                 <div class="hero-stat"><div class="number">100+</div><div class="label">BI 看板</div></div>
                 <div class="hero-stat"><div class="number">1.1亿</div><div class="label">降库存</div></div>
                 <div class="hero-stat"><div class="number">10亿</div><div class="label">年降本目标</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education -->
+    <section id="education">
+        <div class="section-header">
+            <div class="section-label">Education</div>
+            <h2 class="section-title">教育背景</h2>
+        </div>
+        <div class="edu-grid">
+            <div class="edu-card">
+                <p class="school">北京师范大学</p>
+                <p class="degree">统计学 · 硕士</p>
+                <p class="edu-period">2019.09 — 2021.06</p>
+                <ul class="edu-highlights">
+                    <li>专业排名 1/52</li>
+                    <li>研究生国家奖学金</li>
+                    <li>优秀毕业生</li>
+                </ul>
+                <div class="detail-btn" onclick="openModal('edu1Modal')">&#9654; 查看详情</div>
+            </div>
+            <div class="edu-card">
+                <p class="school">郑州大学</p>
+                <p class="degree">数理统计 · 本科</p>
+                <p class="edu-period">2015.09 — 2019.06</p>
+                <ul class="edu-highlights">
+                    <li>专业排名 1/50</li>
+                    <li>国家级励志奖学金</li>
+                    <li>数学竞赛一等奖</li>
+                </ul>
+                <div class="detail-btn" onclick="openModal('edu2Modal')">&#9654; 查看详情</div>
             </div>
         </div>
     </section>
@@ -617,39 +645,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Education -->
-    <section id="education">
-        <div class="section-header">
-            <div class="section-label">Education</div>
-            <h2 class="section-title">教育背景</h2>
-        </div>
-        <div class="edu-grid">
-            <div class="edu-card">
-                <p class="school">北京师范大学</p>
-                <p class="degree">统计学 · 硕士</p>
-                <p class="edu-period">2019.09 — 2021.06</p>
-                <ul class="edu-highlights">
-                    <li>专业排名 1/52</li>
-                    <li>研究生国家奖学金</li>
-                    <li>优秀毕业生</li>
-                </ul>
-                <div class="detail-btn" onclick="openModal('edu1Modal')">&#9654; 查看详情</div>
-            </div>
-            <div class="edu-card">
-                <p class="school">郑州大学</p>
-                <p class="degree">数理统计 · 本科</p>
-                <p class="edu-period">2015.09 — 2019.06</p>
-                <ul class="edu-highlights">
-                    <li>专业排名 1/50</li>
-                    <li>国家级励志奖学金</li>
-                    <li>数学竞赛一等奖</li>
-                </ul>
-                <div class="detail-btn" onclick="openModal('edu2Modal')">&#9654; 查看详情</div>
-            </div>
-        </div>
-    </section>
-
 
     <footer>&copy; 2026 高攀 · Built with data-driven mindset</footer>
 

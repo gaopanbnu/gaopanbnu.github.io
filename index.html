@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高攀 - 数据分析师</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #0f172a;
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.15);
+            --bg: #0a0e1a;
+            --bg-card: rgba(15, 23, 42, 0.6);
+            --bg-card-hover: rgba(30, 41, 59, 0.8);
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            --border: rgba(148, 163, 184, 0.1);
+            --gradient-2: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: -1;
+        }
+
+        /* Nav */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 0.8rem 0;
+            background: rgba(10, 14, 26, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav .nav-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        nav .logo {
+            font-weight: 700;
+            font-size: 1.1rem;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav ul { display: flex; gap: 1.8rem; list-style: none; }
+        nav a { color: var(--text-muted); text-decoration: none; font-size: 0.82rem; transition: color 0.3s; }
+        nav a:hover { color: var(--accent); }
+
+        /* Edit mode toggle */
+        .edit-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 9999;
+            background: var(--gradient-2);
+            color: #fff;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+            transition: transform 0.3s;
+        }
+
+        .edit-toggle:hover { transform: scale(1.1); }
+
+        .editable[contenteditable="true"] {
+            outline: 2px dashed var(--accent);
+            outline-offset: 4px;
+            border-radius: 4px;
+        }
+
+        /* Hero */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6rem 2rem 3rem;
+        }
+
+        .hero-content { max-width: 800px; text-align: center; }
+
+        .avatar-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid rgba(59, 130, 246, 0.3);
+            object-fit: cover;
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--accent);
+            overflow: hidden;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-upload {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 32px;
+            height: 32px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #fff;
+            border: 2px solid var(--bg);
+            transition: transform 0.2s;
+        }
+
+        .avatar-upload:hover { transform: scale(1.1); }
+        .avatar-upload { display: none; }
+        .avatar-upload input { display: none; }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.9rem;
+            background: var(--accent-glow);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 50px;
+            font-size: 0.78rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .hero-badge .dot {
+            width: 6px; height: 6px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero .tagline { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem; font-weight: 300; }
+
+        .hero-contact {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-contact a, .hero-contact span {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.82rem;
+            transition: color 0.3s;
+        }
+
+        .hero-contact a:hover { color: var(--accent); }
+
+        .hero-strength {
+            max-width: 620px;
+            margin: 0 auto;
+            text-align: left;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+        }
+
+        .hero-strength p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 0;
+        }
+
+        .hero-strength strong { color: var(--accent); }
+
+        /* Password modal */
+        .pwd-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            z-index: 99999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pwd-overlay.active { display: flex; }
+
+        .pwd-box {
+            background: #1e293b;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            width: 320px;
+        }
+
+        .pwd-box h4 { color: #fff; margin-bottom: 1rem; font-size: 1rem; }
+
+        .pwd-box input {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            outline: none;
+        }
+
+        .pwd-box input:focus { border-color: var(--accent); }
+
+        .pwd-box .pwd-btns { display: flex; gap: 0.8rem; }
+
+        .pwd-box button {
+            flex: 1;
+            padding: 0.5rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: opacity 0.2s;
+        }
+
+        .pwd-box .pwd-confirm { background: var(--accent); color: #fff; }
+        .pwd-box .pwd-cancel { background: rgba(255,255,255,0.1); color: var(--text-muted); }
+        .pwd-box button:hover { opacity: 0.8; }
+        .pwd-box .pwd-error { color: #ef4444; font-size: 0.78rem; margin-bottom: 0.8rem; display: none; }
+
+
+        /* Sections */
+        section { padding: 3rem 2rem; max-width: 1100px; margin: 0 auto; }
+        .section-header { margin-bottom: 1.5rem; }
+        .section-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 0.5rem; font-weight: 500; }
+        .section-title { font-size: 1.8rem; font-weight: 700; color: #fff; }
+
+        /* Skills - compact */
+        .skills-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+
+        .skill-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.3rem;
+            transition: all 0.3s;
+        }
+
+        .skill-card:hover { background: var(--bg-card-hover); border-color: rgba(59,130,246,0.2); transform: translateY(-2px); }
+        .skill-card h4 { font-size: 0.88rem; color: #fff; margin-bottom: 0.3rem; }
+        .skill-card p { font-size: 0.78rem; color: var(--text-dim); line-height: 1.5; }
+
+        /* Experience */
+        .exp-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .exp-card::before { content:''; position:absolute; top:0; left:0; bottom:0; width:3px; background:var(--gradient-2); border-radius: 3px 0 0 3px; }
+
+        .exp-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.8rem; }
+        .exp-header h3 { font-size: 1.2rem; color: #fff; }
+        .exp-header .company { font-size: 0.9rem; color: var(--text-muted); margin-top: 0.2rem; }
+        .exp-header .period { font-size: 0.78rem; color: var(--accent); background: var(--accent-glow); padding: 0.25rem 0.7rem; border-radius: 20px; border: 1px solid rgba(59,130,246,0.2); }
+
+        .exp-summary { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1rem; }
+
+        .exp-achievements { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+        .achievement { padding: 0.8rem 1rem; background: rgba(59,130,246,0.05); border: 1px solid var(--border); border-radius: 8px; font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+        .achievement strong { color: var(--accent); }
+
+        /* Detail modal */
+        .detail-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: var(--accent-glow);
+            border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 8px;
+            color: var(--accent);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .detail-btn:hover { background: rgba(59,130,246,0.2); }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal {
+            background: #1e293b;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 2.5rem;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover { background: rgba(255,255,255,0.05); color: #fff; }
+
+        .modal h3 { font-size: 1.3rem; color: #fff; margin-bottom: 0.5rem; }
+        .modal .modal-period { font-size: 0.82rem; color: var(--accent); margin-bottom: 1.2rem; }
+        .modal p, .modal li { font-size: 0.88rem; color: var(--text-muted); line-height: 1.8; }
+        .modal ul { padding-left: 1.2rem; margin-top: 0.8rem; }
+        .modal li { margin-bottom: 0.5rem; }
+        .modal .modal-section { margin-top: 1.5rem; }
+        .modal .modal-section h4 { font-size: 0.9rem; color: var(--accent); margin-bottom: 0.6rem; }
+
+        /* Projects - compact */
+        .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .project-card:hover { background: var(--bg-card-hover); border-color: rgba(59,130,246,0.2); }
+        .project-card h3 { font-size: 1rem; color: #fff; margin-bottom: 0.2rem; }
+        .project-card .project-period { font-size: 0.75rem; color: var(--text-dim); margin-bottom: 0.6rem; }
+        .project-card p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 0.8rem; }
+
+        .project-metrics { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .project-metric { padding: 0.2rem 0.6rem; background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.15); border-radius: 5px; font-size: 0.7rem; color: var(--accent); font-weight: 500; }
+
+        /* Education - compact */
+        .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+
+        .edu-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.5rem;
+        }
+
+        .edu-card .school { font-size: 1rem; font-weight: 600; color: #fff; }
+        .edu-card .degree { font-size: 0.85rem; color: var(--accent); margin: 0.2rem 0; }
+        .edu-card .edu-period { font-size: 0.75rem; color: var(--text-dim); margin-bottom: 0.6rem; }
+        .edu-card .edu-highlights { list-style: none; }
+        .edu-card .edu-highlights li { font-size: 0.8rem; color: var(--text-muted); padding: 0.2rem 0 0.2rem 0.8rem; position: relative; }
+        .edu-card .edu-highlights li::before { content:''; position:absolute; left:0; top:50%; width:4px; height:4px; background:var(--accent); border-radius:50%; }
+
+
+        footer { text-align: center; padding: 1.5rem; border-top: 1px solid var(--border); color: var(--text-dim); font-size: 0.75rem; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+            .skills-container { grid-template-columns: 1fr 1fr; }
+            .projects-grid, .edu-grid, .exp-achievements { grid-template-columns: 1fr; }
+            nav ul { gap: 1rem; }
+            .modal { padding: 1.5rem; margin: 1rem; }
+        }
+
+        @media (max-width: 480px) {
+            .skills-container { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 1.8rem; }
+            nav ul { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+
+    <nav>
+        <div class="nav-inner">
+            <div class="logo">GP.</div>
+            <ul>
+                <li><a href="#education">教育</a></li>
+                <li><a href="#skills">能力</a></li>
+                <li><a href="#experience">经历</a></li>
+                <li><a href="#projects">项目</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Edit toggle button -->
+    <button class="edit-toggle" onclick="toggleEdit()" title="编辑模式">&#9998;</button>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="avatar-wrapper">
+                <div class="avatar" id="avatarDisplay">GP</div>
+                <label class="avatar-upload" title="上传头像">
+                    &#128247;
+                    <input type="file" accept="image/*" onchange="uploadAvatar(event)">
+                </label>
+            </div>
+            <div class="hero-badge">
+                <span class="dot"></span>
+                <span>小米集团 · 供应链数据分析</span>
+            </div>
+            <h1 class="editable">高攀</h1>
+            <p class="tagline editable">Data Analyst & Supply Chain Digitalization</p>
+            <div class="hero-contact">
+                <a href="mailto:gaopanbnu@163.com">&#9993; gaopanbnu@163.com</a>
+                <a href="tel:18001034784">&#9742; 18001034784</a>
+                <span>&#9873; 北京</span>
+            </div>
+
+            <div class="hero-strength">
+                <p class="editable">四年供应链数据分析实战经验，专注数据体系搭建与数字化转型。从数据治理到指标体系，从可视化看板到深度专题分析，以数据驱动业务决策。具"数据 + 业务"双视角，抗压善学，可快速将业务诉求转化为数据逻辑，高效支撑业务决策。先后荣获青年工程师(集团)、青蓝导师(集团)、优秀员工、季度之星等个人荣誉。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education -->
+    <section id="education">
+        <div class="section-header">
+            <div class="section-label">Education</div>
+            <h2 class="section-title">教育背景</h2>
+        </div>
+        <div class="edu-grid">
+            <div class="edu-card">
+                <p class="school">北京师范大学</p>
+                <p class="degree">统计学 · 硕士</p>
+                <p class="edu-period">2019.09 — 2021.06</p>
+                <ul class="edu-highlights">
+                    <li>专业排名 1/52</li>
+                    <li>研究生国家奖学金</li>
+                    <li>优秀毕业生</li>
+                </ul>
+                <div class="detail-btn" onclick="openModal('edu1Modal')">&#9654; 查看详情</div>
+            </div>
+            <div class="edu-card">
+                <p class="school">郑州大学</p>
+                <p class="degree">数理统计 · 本科</p>
+                <p class="edu-period">2015.09 — 2019.06</p>
+                <ul class="edu-highlights">
+                    <li>专业排名 1/50</li>
+                    <li>国家级励志奖学金</li>
+                    <li>数学竞赛一等奖</li>
+                </ul>
+                <div class="detail-btn" onclick="openModal('edu2Modal')">&#9654; 查看详情</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills">
+        <div class="section-header">
+            <div class="section-label">Expertise</div>
+            <h2 class="section-title">专业能力</h2>
+        </div>
+        <div class="skills-container">
+            <div class="skill-card">
+                <h4>SQL</h4>
+                <p class="editable">精通 MySQL / PostgreSQL 复杂查询与数据建模</p>
+            </div>
+            <div class="skill-card">
+                <h4>Python / R</h4>
+                <p class="editable">数据清洗、统计分析、建模与自动化</p>
+            </div>
+            <div class="skill-card">
+                <h4>Power BI / 数鲸</h4>
+                <p class="editable">SQL 语义模型，交互式看板独立搭建</p>
+            </div>
+            <div class="skill-card">
+                <h4>统计建模</h4>
+                <p class="editable">回归、时序、主成分、机器学习</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience -->
+    <section id="experience">
+        <div class="section-header">
+            <div class="section-label">Experience</div>
+            <h2 class="section-title">工作经历</h2>
+        </div>
+        <div class="exp-card">
+            <div class="exp-header">
+                <div>
+                    <h3>数据分析师</h3>
+                    <p class="company">小米集团 · 供应链数字化</p>
+                </div>
+                <span class="period">2021.07 — 至今</span>
+            </div>
+            <p class="exp-summary editable">全面负责数据工作规划与落地，主导供应链数字化转型项目，统筹数据管理、指标体系搭建、经营分析全流程。</p>
+            <div class="exp-achievements">
+                <div class="achievement"><strong>数据中心化</strong>：业务数据 100% 线上集成统一管理</div>
+                <div class="achievement"><strong>指标体系</strong>：从0到1搭建，分析效率提升 80%</div>
+                <div class="achievement"><strong>深度分析</strong>：降低采购成本 5%，减库存 1.1亿</div>
+                <div class="achievement"><strong>系统转型</strong>：成本核算从两周缩短至实时</div>
+            </div>
+            <div class="detail-btn" onclick="openModal('expModal')">&#9654; 查看详细信息</div>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects">
+        <div class="section-header">
+            <div class="section-label">Portfolio</div>
+            <h2 class="section-title">项目经历</h2>
+        </div>
+        <div class="projects-grid">
+            <div class="project-card">
+                <h3>供应链数字化</h3>
+                <p class="project-period">2022.03 — 至今</p>
+                <p class="editable">数据中心化管理，统一数据源及逻辑口径，实现全链路可视可控。</p>
+                <div class="project-metrics">
+                    <span class="project-metric">30+ 指标</span>
+                    <span class="project-metric">100+ 看板</span>
+                    <span class="project-metric">时效 +85%</span>
+                    <span class="project-metric">节约 500+万</span>
+                </div>
+                <div class="detail-btn" onclick="openModal('proj1Modal')">&#9654; 查看详情</div>
+            </div>
+            <div class="project-card">
+                <h3>ISC — 全链路成本</h3>
+                <p class="project-period">2024.01 — 至今</p>
+                <p class="editable">统一成本核算口径，建立项目全生命周期成本精细化管理能力。</p>
+                <div class="project-metrics">
+                    <span class="project-metric">偏差 &le;5%</span>
+                    <span class="project-metric">14天&rarr;实时</span>
+                    <span class="project-metric">人力 -90%</span>
+                </div>
+                <div class="detail-btn" onclick="openModal('proj2Modal')">&#9654; 查看详情</div>
+            </div>
+        </div>
+    </section>
+
+    <footer>&copy; 2026 高攀 · Built with data-driven mindset</footer>
+
+    <!-- Password dialog -->
+    <div class="pwd-overlay" id="pwdOverlay">
+        <div class="pwd-box">
+            <h4>&#128274; 输入管理密码</h4>
+            <p class="pwd-error" id="pwdError">密码错误，请重试</p>
+            <input type="password" id="pwdInput" placeholder="请输入密码..." onkeydown="if(event.key==='Enter')confirmPwd()">
+            <div class="pwd-btns">
+                <button class="pwd-cancel" onclick="closePwd()">取消</button>
+                <button class="pwd-confirm" onclick="confirmPwd()">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="expModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('expModal')">&times;</button>
+            <h3>工作经历 · 小米集团</h3>
+            <p class="modal-period">2021.07 — 至今 | 数据分析师</p>
+            <p>全面负责数据工作的规划与落地，主导供应链数字化转型项目，统筹数据管理、指标体系搭建、经营分析全流程。</p>
+            <div class="modal-section">
+                <h4>核心成果</h4>
+                <ul>
+                    <li><strong>数据中心化管理：</strong>涵盖埋点设计、数据采集、清洗加工与模型开发，推动交付、成本、库存、销售、售后等业务领域数据集中化管理，实现核心业务数据100%线上集成统一管理。</li>
+                    <li><strong>指标体系搭建与运营：</strong>从0到1完成指标体系搭建，统一统计口径并输出指标白皮书，推动整体分析效率提升约80%。</li>
+                    <li><strong>业务监控与经营分析：</strong>建立数据监控规则与多级预警机制，搭建自动化周/月报体系，辅助管理层决策。</li>
+                    <li><strong>深度专题分析：</strong>完成竞品成本、交付弹性、需求预测、呆滞库存预测等分析，有效降低采购成本5%、减低呆滞库存约30%（1.1亿）、提升交付弹性（20%→40%）。</li>
+                    <li><strong>BI可视化看板：</strong>构建数据看板模型100+，推动数据分析流程自动化，支持业务团队自助分析。</li>
+                    <li><strong>系统数字化转型：</strong>完成ISC-采购闭环、ISC-全链路成本、成本核算等系统流程落地，采购效率提升约30%，成本核算周期从两周缩短至实时。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="proj1Modal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('proj1Modal')">&times;</button>
+            <h3>供应链数字化</h3>
+            <p class="modal-period">2022.03 — 至今</p>
+            <p>解决供应链各环节数据离散、数据质量差、分析成本高、业务决策依赖经验的问题。</p>
+            <div class="modal-section">
+                <h4>核心工作</h4>
+                <ul>
+                    <li><strong>指标体系搭建：</strong>将战略目标分解为可量化的关键绩效指标，拆解多级指标，明确库存周转、交付达成、降本等核心指标逻辑。</li>
+                    <li><strong>数据中心化管理：</strong>集成SAP、SRM等系统数据到数仓做统一调度，通过SQL/Python做数据清洗及数据表开发。</li>
+                    <li><strong>可视化看板搭建：</strong>基于Power BI/数鲸设计交互式看板，覆盖"需求-库存-履约-成本-运营"5大模块，实现从总览到单据明细的逐层下钻。</li>
+                    <li><strong>指标分析监控：</strong>建立指标分级管理制度，按月/周维输出数据分析报告，对异常结果做异动归因。</li>
+                </ul>
+            </div>
+            <div class="modal-section">
+                <h4>核心成果</h4>
+                <ul>
+                    <li>从0到1完成供应链30+指标体系搭建</li>
+                    <li>全域数据实现100%数仓中心化管理</li>
+                    <li>可视化看板搭建100+，100%业务覆盖</li>
+                    <li>数据时效提高85%（7天→1天）</li>
+                    <li>取代80%日常手工报表，节约人力成本约95%</li>
+                    <li>节约研发成本500+万，保障年10亿降本目标达成</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="proj2Modal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('proj2Modal')">&times;</button>
+            <h3>ISC — 全链路成本</h3>
+            <p class="modal-period">2024.01 — 至今</p>
+            <p>解决成本核算口径多样化、核算周期长时效差等问题，实现项目全生命周期成本精细化管理。</p>
+            <div class="modal-section">
+                <h4>核心工作</h4>
+                <ul>
+                    <li><strong>方案设计：</strong>梳理多部门成本统计逻辑及分析需求，统一成本管理口径、数据、流程，完成系统功能及页面设计。</li>
+                    <li><strong>验收治理：</strong>监督系统功能按需落地，承担产品功能验收、数据治理、系统功能优化等工作。</li>
+                    <li><strong>培训推广：</strong>组织系统培训，协助业务层完成业务流程切换，保障系统对于业务100%覆盖。</li>
+                </ul>
+            </div>
+            <div class="modal-section">
+                <h4>核心成果</h4>
+                <ul>
+                    <li>实现成本管理体系统一</li>
+                    <li>建立成本预测能力（预实偏差降低至5%以内）</li>
+                    <li>量产成本核算周期提高99%（14天→实时）</li>
+                    <li>新项目成本核算周期提高86%（14天→2天）</li>
+                    <li>节约人力成本超90%</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="edu1Modal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('edu1Modal')">&times;</button>
+            <h3>北京师范大学</h3>
+            <p class="modal-period">2019.09 — 2021.06 | 统计学 · 硕士</p>
+            <div class="modal-section">
+                <h4>主要课程</h4>
+                <p>应用回归分析、应用多元统计分析、应用时间序列分析、随机过程、商务与经济分析、机器学习等</p>
+            </div>
+            <div class="modal-section">
+                <h4>学业表现</h4>
+                <ul>
+                    <li>专业排名 1/52</li>
+                    <li>研究生国家奖学金</li>
+                    <li>北京师范大学优秀毕业生</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="edu2Modal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('edu2Modal')">&times;</button>
+            <h3>郑州大学</h3>
+            <p class="modal-period">2015.09 — 2019.06 | 数理统计 · 本科</p>
+            <div class="modal-section">
+                <h4>主要课程</h4>
+                <p>概率论与数理统计、多元统计分析、应用回归分析、抽样调查、运筹学、数学分析、高等代数等</p>
+            </div>
+            <div class="modal-section">
+                <h4>学业表现</h4>
+                <ul>
+                    <li>专业排名 1/50</li>
+                    <li>国家级励志奖学金</li>
+                    <li>全国大学生数学竞赛一等奖（专业组）</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', e => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        // Edit mode with password protection
+        const EDIT_PASSWORD = 'gp042619';
+        let editMode = false;
+        let authenticated = false;
+
+        function toggleEdit() {
+            if (!editMode && !authenticated) {
+                document.getElementById('pwdOverlay').classList.add('active');
+                document.getElementById('pwdInput').focus();
+                return;
+            }
+            editMode = !editMode;
+            if (!editMode) authenticated = false;
+            document.querySelectorAll('.editable').forEach(el => {
+                el.contentEditable = editMode;
+            });
+            document.querySelector('.avatar-upload').style.display = editMode ? 'flex' : 'none';
+            document.querySelector('.edit-toggle').style.background = editMode
+                ? 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)'
+                : 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)';
+            document.querySelector('.edit-toggle').innerHTML = editMode ? '&#10003;' : '&#9998;';
+        }
+
+        function confirmPwd() {
+            const input = document.getElementById('pwdInput');
+            if (input.value === EDIT_PASSWORD) {
+                authenticated = true;
+                closePwd();
+                toggleEdit();
+            } else {
+                document.getElementById('pwdError').style.display = 'block';
+                input.value = '';
+                input.focus();
+            }
+        }
+
+        function closePwd() {
+            document.getElementById('pwdOverlay').classList.remove('active');
+            document.getElementById('pwdInput').value = '';
+            document.getElementById('pwdError').style.display = 'none';
+        }
+
+        // Avatar upload
+        function uploadAvatar(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const avatar = document.getElementById('avatarDisplay');
+                avatar.innerHTML = '<img src="' + e.target.result + '" alt="头像">';
+                localStorage.setItem('avatar', e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Load saved avatar
+        window.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('avatar');
+            if (saved) {
+                document.getElementById('avatarDisplay').innerHTML = '<img src="' + saved + '" alt="头像">';
+            }
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

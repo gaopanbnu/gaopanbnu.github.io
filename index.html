@@ -62,12 +62,16 @@
         }
 
         nav .logo {
-            font-weight: 700;
-            font-size: 1.1rem;
-            background: var(--gradient-2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        nav .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         nav ul { display: flex; gap: 1.8rem; list-style: none; }
@@ -462,7 +466,7 @@
 
     <nav>
         <div class="nav-inner">
-            <div class="logo">GP.</div>
+            <div class="logo"><img src="avatar.jpg" alt="高攀"></div>
             <ul>
                 <li><a href="#education">教育</a></li>
                 <li><a href="#skills">能力</a></li>

@@ -292,6 +292,46 @@
 
         /* Sections */
         section { padding: 3rem 2rem; max-width: 1100px; margin: 0 auto; }
+
+        /* Scroll animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .animate-on-scroll:nth-child(2) { transition-delay: 0.1s; }
+        .animate-on-scroll:nth-child(3) { transition-delay: 0.2s; }
+        .animate-on-scroll:nth-child(4) { transition-delay: 0.3s; }
+
+        /* Hero entrance */
+        .hero .avatar-wrapper {
+            animation: fadeInDown 1s ease forwards;
+        }
+        .hero h1 {
+            animation: fadeInUp 1s ease 0.3s forwards;
+            opacity: 0;
+        }
+        .hero .tagline {
+            animation: fadeInUp 1s ease 0.5s forwards;
+            opacity: 0;
+        }
+        .hero .summary-text {
+            animation: fadeInUp 1s ease 0.7s forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         .section-header { margin-bottom: 1.5rem; }
         .section-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 0.5rem; font-weight: 500; }
         .section-title { font-size: 1.8rem; font-weight: 700; color: #fff; }
@@ -836,6 +876,21 @@
         window.addEventListener('DOMContentLoaded', () => {
             localStorage.removeItem('avatar');
         });
+
+        // Scroll animations
+        const animateElements = document.querySelectorAll('.skill-card, .edu-card, .exp-block, .section-header, .proj-card');
+        animateElements.forEach(el => el.classList.add('animate-on-scroll'));
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        animateElements.forEach(el => observer.observe(el));
 
         // Smooth scroll
         document.querySelectorAll('nav a').forEach(link => {

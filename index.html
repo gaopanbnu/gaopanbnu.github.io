@@ -830,10 +830,7 @@
 
         // Load saved avatar
         window.addEventListener('DOMContentLoaded', () => {
-            const saved = localStorage.getItem('avatar');
-            if (saved) {
-                document.getElementById('avatarDisplay').innerHTML = '<img src="' + saved + '" alt="头像">';
-            }
+            localStorage.removeItem('avatar');
         });
 
         // Smooth scroll
